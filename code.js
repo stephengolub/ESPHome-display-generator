@@ -160,5 +160,15 @@ const generate = () => {
     }
   }
 
-  document.getElementById("output").innerText = lines.join('\n');
+  const opBox = document.getElementById("output");
+  opBox.innerText = lines.join('\n');
+  opBox.classList.remove("hidden");
+};
+
+const copyToClipboard = () => {
+  const op = document.getElementById("output");
+  op.select();
+  op.setSelectionRange(0, 999999);
+
+  document.execCommand("copy");
 };

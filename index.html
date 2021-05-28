@@ -6,13 +6,14 @@
     </head>
     <body onmouseover="onGridMouseOver(event)">
         <div id="controls">
-            <select name="width" id="width" onchange="onFieldChange()"></select>
-            x
-            <select name="height" id="height" onchange="onFieldChange()"></select>
+            <select name="width" id="width" onchange="onFieldChange()"></select>x<select name="height" id="height" onchange="onFieldChange()"></select>
             <button class="control" onclick="generate()">Generate Code</button>
             <span id="info"></span>
         </div>
         <div id="gridArea" onmousedown="onGridMouseDown(event)" onmouseup="onGridMouseUp(event)" onclick="onGridClick(event)"></div>
-        <pre id="output"></pre>
+        <div class="output-container hidden">
+            <button id="copy_output" onclick="copyToClipboard()">Copy</button>
+            <pre id="output"></pre>
+        </div>
     </body>
 </html>
