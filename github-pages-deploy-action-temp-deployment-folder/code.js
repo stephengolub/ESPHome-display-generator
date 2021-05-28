@@ -59,6 +59,7 @@ const coordsFromCell = cell => {
 const setCellValue = (cell, destination) => {
   coords = coordsFromCell(cell);
   setInfoBox(`${coords}: ${destination}`);
+  console.log(coords);
   grid[coords[1]][coords[0]] = destination;
 };
 
@@ -98,10 +99,7 @@ const drawGrid = () => {
 
 const setGrid = (w, h) => {
   // Creating new empty grid
-  let newGrid = [];
-  for (let y=0; y<h; y++) {
-    newGrid.push(Array(w).fill(false));
-  }
+  let newGrid = Array(h).fill(Array(w).fill(false));
   if (h < grid.length) {
     for (let i in newGrid) {
       copyRow(newGrid[i], grid[i]);
@@ -154,8 +152,12 @@ const generate = () => {
     const row = grid[y];
     for (let x in row) {
       const cell = row[x];
+      console.log(`${x},${y}: ${cell} (${typeof cell})`);
       if (cell === true) {
+        console.log(`on: ${x},${y}`);
         lines.push(`it.draw_pixel_at(${x}, ${y}, COLOR_ON);`);
+      } else {
+        console.log(`off: ${x},${y}`);
       }
     }
   }
