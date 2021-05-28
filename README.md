@@ -20,3 +20,11 @@ Click a cell to highlight it. Once your picture is set, you can click the genera
 ## Limitations
 
 Currently, it is a point-by-point drawing. Ultimately the desire is to calculate or track lines and shapes.
+
+## TODO
+
+* Drawing tools:
+    * Line
+    * Circle/Ellipse
+    * Rectangle/Square
+* Colors
