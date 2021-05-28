@@ -1,7 +1,10 @@
 <html>
     <head>
-        <script type="text/javascript" src="code.js"></script>
-        <link rel="stylesheet" type="text/css" href="style.css">
+        <script type="text/javascript" src="js/code.js"></script>
+        <script type="text/javascript" src="js/prism.js"></script>
+        <link rel="stylesheet" type="text/css" href="css/prism.css">
+        <link rel="stylesheet" type="text/css" href="css/style.css">
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@mdi/font@5.9.55/css/materialdesignicons.min.css">
         <title>ESPHome Screen Drawing</title>
     </head>
     <body onmouseover="onGridMouseOver(event)">
@@ -12,8 +15,8 @@
         </div>
         <div id="gridArea" onmousedown="onGridMouseDown(event)" onmouseup="onGridMouseUp(event)" onclick="onGridClick(event)"></div>
         <div class="output-container hidden">
-            <button id="copy_output" onclick="copyToClipboard()">Copy</button>
-            <pre id="output"></pre>
+            <pre><code id="output" class="language-cpp"></code></pre>
+            <button id="copy_output" class="mdi mdi-clipboard" onclick="copyToClipboard()" alt="Copy Code to Clipboard"><span>Copy code to clipboard</span></button>
         </div>
     </body>
 </html>

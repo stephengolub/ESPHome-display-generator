@@ -24,3 +24,25 @@
 #gridArea > .cell.off {
   background-color: #FFFFFF;
 }
+
+.output-container {
+  position: relative;
+}
+
+#copy_output {
+  position: absolute;
+  top: 8px;
+  right: 2px;
+  background: none;
+  border: none;
+  color: #FFFFFF;
+  font-size: 1.25em;
+}
+
+#copy_output > span {
+    display: none;
+}
+
+.hidden {
+  display: none;
+}
