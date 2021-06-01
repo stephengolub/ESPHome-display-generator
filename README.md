@@ -30,7 +30,7 @@ _As of now, none of these will create the proper code, they still do the "turn p
 
 ### Known Bugs
 
-There's an issue that I know is a decimal point or some mundane details that is causing the lines when the slope is negative to be offset weirdly. So if anyone has any ideas, PRs are welcome. I'll be tracking this as issue #1.
+There's an issue that I know is a decimal point or some mundane details that is causing the lines when the slope is negative to be offset weirdly. So if anyone has any ideas, PRs are welcome. I'll be tracking this as [issue #1](https://github.com/stephengolub/ESPHome-display-generator/issues/1).
 
 ## TODO
 
