@@ -1,3 +1,15 @@
+body {
+    --darkest-color: #000000;
+    --lightest-color: #FFFFFF;
+
+    background-color: var(--lightest-color);
+}
+
+body.dark-theme {
+    --lightest-color: #000000;
+    --darkest-color: #FFFFFF;
+}
+
 #gridArea {
   white-space: nowrap;
   -webkit-touch-callout: none; /* iOS Safari */
@@ -13,16 +25,16 @@
   display: inline-block;
   width: 10px;
   height: 10px;
-  border: 1px solid #000000;
+  border: 1px solid var(--darkest-color);
   cursor: pointer;
 }
 
 #gridArea > .cell.on {
-  background-color: #000000;
+  background-color: var(--darkest-color);
 }
 
 #gridArea > .cell.off {
-  background-color: #FFFFFF;
+  background-color: var(--lightest-color);
 }
 
 .output-container {
@@ -35,14 +47,34 @@
   right: 2px;
   background: none;
   border: none;
-  color: #FFFFFF;
+  color: var(--lightest-color);
   font-size: 1.25em;
-}
-
-#copy_output > span {
-    display: none;
 }
 
 .hidden {
   display: none;
+}
+
+.mdi span {
+  display: none;
+}
+
+.tool {
+  background-color: var(--lightest-color);
+  border: 1px solid var(--darkest-color);
+  color: var(--darkest-color);
+  border-radius: 5px;
+  padding: 5px 8px;
+}
+
+.tool.active {
+  background-color: var(--darkest-color);
+  border: 1px solid var(--lightest-color);
+  color: var(--lightest-color);
+}
+
+.number {
+  width: 50px;
+  text-align: center;
+  margin: 2px;
 }

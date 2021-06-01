@@ -9,9 +9,12 @@
     </head>
     <body onmouseover="onGridMouseOver(event)">
         <div id="controls">
-            <select name="width" id="width" onchange="onFieldChange()"></select>x<select name="height" id="height" onchange="onFieldChange()"></select>
-            <button class="control" onclick="generate()">Generate Code</button>
-            <span id="info"></span>
+            <input type="number" class="number" value="8" min="8" name="width" id="width" onchange="onFieldChange()">x<input type="number" class="number" value="8" min="8" name="height" id="height" onchange="onFieldChange()">
+            <button class="mdi mdi-pencil tool active" onclick="chooseTool('pencil')" title="pencil" alt="pencil" id="tool-pencil"><span>Pencil</span></button>
+            <button class="mdi mdi-minus tool" onclick="chooseTool('line')" title="line" alt="line" id="tool-line"><span>Line</span></button>
+            <button class="mdi mdi-ellipse-outline tool" onclick="chooseTool('ellipse')" title="ellipse" alt="ellipse" id="tool-ellipse"><span>Ellipse</span></button>
+            <button class="mdi mdi-rectangle-outline tool" onclick="chooseTool('rectangle')" title="rectangle" alt="rectangle" id="tool-rectangle"><span>Rectangle</span></button>
+            <button class="control mdi mdi-play tool" onclick="generate()"><span>Generate Code</span></button>
         </div>
         <div id="gridArea" onmousedown="onGridMouseDown(event)" onmouseup="onGridMouseUp(event)" onclick="onGridClick(event)"></div>
         <div class="output-container hidden">
