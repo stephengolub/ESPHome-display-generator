@@ -11,6 +11,13 @@ const TOOL_LINE = "line";
 const TOOL_ELLIPSE = "ellipse";
 const TOOL_RECTANGLE = "rectangle";
 
+const outputs = {};
+
+outputs[TOOL_PENCIL] = [];
+outputs[TOOL_LINE] = [];
+outputs[TOOL_ELLIPSE] = [];
+outputs[TOOL_RECTANGLE] = [];
+
 let grid = [];
 
 const copyRow = (destRow, srcRow) => {
@@ -69,11 +76,23 @@ const lineBetweenPoints = (pointA, pointB) => {
 
   points = [];
   if (x2 == x1) { // Vertical Line
-    for (let y = y1; y <= y2 && validPoint([x1, y]); y++) {
+    let yMin = y1;
+    let yMax = y2;
+    if (y1 > y2) {
+      yMin = y2;
+      yMax = y1;
+    }
+    for (let y = yMin; y <= yMax && validPoint([x1, y]); y++) {
       points.push([x1, y]);
     }
   } else if (y2 == y1) { // Horizontal Line
-    for (let x = x1; x <= x2 && validPoint([y1, x]); x++) {
+    let xMin = x1;
+    let xMax = x2;
+    if (x1 > x2) {
+      xMin = x2;
+      xMax = x1;
+    }
+    for (let x = xMin; x <= xMax && validPoint([y1, x]); x++) {
       points.push([x, y1]);
     }
   } else {
@@ -156,20 +175,24 @@ const onGridMouseDown = (e) => {
   }
 };
 
-const onGridMouseUp = () => {
-  mouseDown = false;
-  destination = undefined;
-  resetToolPoints();
+const onGridMouseUp = (e) => {
+  const cell = e.target;
   switch (currentTool) {
     case TOOL_PENCIL:
+      outputs[TOOL_PENCIL].push(coordsFromCell(cell))
       break;
     case TOOL_LINE:
+      outputs[TOOL_LINE].push([point1, point2])
       break;
     case TOOL_ELLIPSE:
       break;
     case TOOL_RECTANGLE:
+      outputs[TOOL_RECTANGLE].push([point1, point2])
       break;
   }
+  mouseDown = false;
+  destination = undefined;
+  resetToolPoints();
 };
 
 const coordsFromCell = cell => {
@@ -302,17 +325,49 @@ if (
   document.addEventListener("DOMContentLoaded", onReady);
 }
 
+// We're calling COLORs explicitly so that it is obvious what we are looking for.
 const generate = () => {
-  let lines = ["// First we'll handle the turn on pixels."];
+  let lines = ["// Lines"];
 
-  for (let y in grid) {
-    const row = grid[y];
-    for (let x in row) {
-      const cell = row[x];
-      if (cell === true) {
-        lines.push(`it.draw_pixel_at(${x}, ${y}, COLOR_ON);`);
-      }
+  for (let i in outputs[TOOL_LINE]) {
+    points = outputs[TOOL_LINE][i];
+    let x1 = points[0][0];
+    let y1 = points[0][1];
+    let x2 = points[1][0];
+    let y2 = points[1][1];
+
+    lines.push(`it.line(${x1},${y1},${x2},${y2},COLOR_ON);`);
+  }
+
+  lines.push("// Rectangles");
+  for (let i in outputs[TOOL_RECTANGLE]) {
+    points = outputs[TOOL_RECTANGLE][i];
+    let x1 = points[0][0];
+    let y1 = points[0][1];
+    let x2 = points[1][0];
+    let y2 = points[1][1];
+
+    let w = Math.abs(x2-x1);
+    let h = Math.abs(y2-y1);
+
+    if (x1 < x2 && y1 < y2) { // Is Upper Left
+      lines.push(`it.rectangle(${x1},${y1},${w},${h},COLOR_ON);`);
+    } else if (x2 < x1 && y2 < y1) { // Is Lower Right
+      lines.push(`it.rectangle(${x2},${y2},${w},${h},COLOR_ON);`);
+    } else if (x1 < x2 && y2 < y1) { // Is Lower Left
+      lines.push(`it.rectangle(${x1},${y2},${w},${h},COLOR_ON);`);
+    } else { // Is Upper Right
+      lines.push(`it.rectangle(${x2},${y1},${w},${h},COLOR_ON);`);
     }
+  }
+
+  lines.push("// Clean up points");
+  for (let i in outputs[TOOL_PENCIL]) {
+    const coords = outputs[TOOL_PENCIL][i];
+    const x = coords[0];
+    const y = coords[1];
+    const state = grid[y][x] ? 'ON' : 'OFF';
+    lines.push(`it.draw_pixel_at(${x},${y},COLOR_${state});`)
   }
 
   document.getElementById("output").innerText = lines.join('\n');

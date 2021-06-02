@@ -26,8 +26,6 @@ There are only the three tools implemented:
 * Line drawing
 * Rectangle
 
-_As of now, none of these will create the proper code, they still do the "turn pixel on" code._
-
 ### Known Bugs
 
 There's an issue that I know is a decimal point or some mundane details that is causing the lines when the slope is negative to be offset weirdly. So if anyone has any ideas, PRs are welcome. I'll be tracking this as [issue #1](https://github.com/stephengolub/ESPHome-display-generator/issues/1).
@@ -37,5 +35,4 @@ There's an issue that I know is a decimal point or some mundane details that is 
 * Fix line offset weirdness with negative slopes.
 * Drawing tools:
     * Circle/Ellipse
-* Track lines drawn and actually generate the `it.line` or `it.rectangle` code
 * Colors
