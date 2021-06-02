@@ -105,8 +105,6 @@ const lineBetweenPoints = (pointA, pointB) => {
     if (x1 > x2) {
       xMax = x1;
       xMin = x2;
-    }
-    if (y1 > y2) {
       y = y1;
       b = y2;
     }
