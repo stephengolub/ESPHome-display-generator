@@ -68,6 +68,10 @@ const validPoint = (coords) => {
   return (coords[0] >= 0 && coords[0] <= maxWidth) && (coords[1] >= 0 && coords[1] <= maxHeight);
 }
 
+const getDistanceBetweenPoints = (pointA, pointB) => {
+  return Math.sqrt(((pointA[0] - pointB[0])^2) * (pointA[1] - pointB[1])^2)
+};
+
 const lineBetweenPoints = (pointA, pointB) => {
   x1 = pointA[0];
   y1 = pointA[1];
@@ -97,7 +101,6 @@ const lineBetweenPoints = (pointA, pointB) => {
     }
   } else {
     let m = (y2 - y1) / (x2 - x1);
-    console.log("Slope:", m);
     let xMin = x1;
     let xMax = x2;
     let b = y1;
@@ -151,6 +154,21 @@ const rectAroundPoints = (pointA, pointB) => {
   return points;
 }
 
+const RAD = Math.PI / 180;
+
+const circleOfPoints = (centerPoint, radius) => {
+  cX = centerPoint[0];
+  cY = centerPoint[1];
+  points = [];
+  for (let deg=0; deg <= 360; deg++) {
+    let x = radius * Math.sin(deg * RAD);
+    let y = radius * Math.cos(deg * RAD);
+    points.push([Math.round(x) + cX, Math.round(y) + cY]);
+  }
+  pSet = new Set(points.map(x => x.toString()));
+  return [...pSet.values()].map(x => x.split(",").map(p => +p)).filter(validPoint);
+};
+
 const onGridMouseDown = (e) => {
   if (targetIsCell(e)) {
     const cell = e.target;
@@ -183,6 +201,7 @@ const onGridMouseUp = (e) => {
       outputs[TOOL_LINE].push([point1, point2])
       break;
     case TOOL_ELLIPSE:
+      outputs[TOOL_ELLIPSE].push([point1, point2])
       break;
     case TOOL_RECTANGLE:
       outputs[TOOL_RECTANGLE].push([point1, point2])
@@ -198,12 +217,14 @@ const coordsFromCell = cell => {
 };
 
 const setCellValueByCoords = (coords, state, cell) => {
+  if (!validPoint(coords)) { return; }
   const x = coords[0];
   const y = coords[1];
   grid[y][x] = state;
   if (cell == undefined) {
     cell = document.getElementById(`${x}_${y}`);
   }
+  if (!cell) { return; }
   if (state) {
     cell.classList.add(STATE_ON)
     cell.classList.remove(STATE_OFF)
@@ -222,7 +243,6 @@ const setBulkCellValueByCoords = (points, state) => {
 };
 
 const getCellValue = (coords) => {
-  console.log("Cell:", coords)
   return grid[coords[1]][coords[0]];
 };
 
@@ -242,6 +262,12 @@ const onGridMouseOver = (e) => {
         }
         break;
       case TOOL_ELLIPSE:
+        point2 = coordsFromCell(cell);
+        setBulkCellValueByCoords(drawPoints, false);
+        drawPoints = circleOfPoints(point1, getDistanceBetweenPoints(point1, point2)).filter(c => !getCellValue(c));
+        for (let i in points) {
+          setCellValueByCoords(points[i], true);
+        }
         break;
       case TOOL_RECTANGLE:
         point2 = coordsFromCell(cell);
@@ -256,7 +282,6 @@ const onGridMouseOver = (e) => {
 }
 
 const getCell = (state, x, y) => {
-  const cls = state ? STATE_ON : STATE_OFF;
   const cell = document.createElement('div');
   cell.id = `${x}_${y}`;
   cell.classList.add("cell");
@@ -357,6 +382,15 @@ const generate = () => {
     } else { // Is Upper Right
       lines.push(`it.rectangle(${x2},${y1},${w},${h},COLOR_ON);`);
     }
+  }
+
+  lines.push("// Circles");
+  for (let i in outputs[TOOL_ELLIPSE]) {
+    points = outputs[TOOL_ELLIPSE][i]
+    let x1 = points[0][0];
+    let y1 = points[0][1];
+    let r = getDistanceBetweenPoints(points[0], points[1]);
+    lines.push(`it.circle(${x1},${y1},${r});`);
   }
 
   lines.push("// Clean up points");
