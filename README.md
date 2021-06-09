@@ -10,28 +10,36 @@ Currently it's hosted on GitHub Pages: https://stephengolub.github.io/ESPHome-di
 
 You can choose the dimensions and the grid will auto-resize. It'll attempt to clone existing marks into the new grid (if the size is adequate).
 
-Click a cell to highlight it. Once your picture is set, you can click the generate button at the top to output the code for the ESPHome display component to draw.
+![Grid Size Changing via Inputs](images/docs/input_grid_size.gif)
 
-### Query Params
+Click a cell to highlight it. Or click and drag to color multiple cells. Once your picture is set, you can click the generate button at the top to output the code for the ESPHome display component to draw.
+
+![Drawing Demo](images/docs/drawing.gif)
+
+### Query Parameters
 
 * **w**: will preset the width
 * **h**: will preset the height
 
-## Limitations
+![Query Param Entry Demonstration](images/docs/queryparams.gif)
 
 ### Tools
 
-There are only the three tools implemented:
+There are only four tools implemented:
 * Pixel Toggle (pencil)
 * Line drawing
 * Rectangle
+* Circles
+
+
 
 ### Known Bugs
 
-_NONE YET_
+* [Drawing circles is unstable](https://github.com/stephengolub/ESPHome-display-generator/issues/3)
+* [Near vertical line is not contiguous](https://github.com/stephengolub/ESPHome-display-generator/issues/4)
 
 ## TODO
 
 * Drawing tools:
-    * Circle/Ellipse
+    * Allow "filled" rectangles and circles
 * Colors
