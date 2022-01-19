@@ -1,7 +1,7 @@
 const minHeight = 8;
 const minWidth = 8;
-const maxHeight = 128;
-const maxWidth = 128;
+let maxHeight = 128;
+let maxWidth = 128;
 
 const STATE_ON = "on";
 const STATE_OFF = "off";
@@ -303,6 +303,8 @@ const drawGrid = () => {
 const setGrid = (w, h) => {
   // Creating new empty grid
   let newGrid = [];
+  maxHeight = h;
+  maxWidth = w;
   for (let y=0; y<h; y++) {
     newGrid.push(Array(w).fill(false));
   }
